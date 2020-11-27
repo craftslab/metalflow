@@ -21,6 +21,7 @@ See *[metalview](https://github.com/craftslab/metalview/)* as a view of *metalfl
 
 - Gin >= 1.6.0
 - Go >= 1.15.0
+- etcd >= 3.4.0
 
 
 
