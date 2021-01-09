@@ -51,7 +51,7 @@ TODO
 
 ## Design
 
-![design](design.svg)
+![design](design.png)
 
 
 
