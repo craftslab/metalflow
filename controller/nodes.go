@@ -75,7 +75,7 @@ func (c *Controller) GetInfo(ctx *gin.Context) {
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
-// @Router /nodes/{id}/info [get]
+// @Router /nodes/{id}/perf [get]
 func (c *Controller) GetPerf(ctx *gin.Context) {
 	// TODO
 }
