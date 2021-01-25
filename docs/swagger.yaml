@@ -300,6 +300,39 @@ paths:
     get:
       consumes:
       - application/json
+      description: Get node information by ID
+      parameters:
+      - description: Node ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Node'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+      summary: Get node information by ID
+      tags:
+      - nodes
+  /nodes/{id}/perf:
+    get:
+      consumes:
+      - application/json
       description: Get node performance by ID
       parameters:
       - description: Node ID
