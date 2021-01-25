@@ -108,18 +108,28 @@ func (r *Router) setRoute() error {
 		return errors.New("failed to new controller")
 	}
 
-	_auth := r.engine.Group("/auth")
-	_auth.POST("login", r.auth.Middleware.LoginHandler)
-	_auth.GET("refresh", r.auth.Middleware.RefreshHandler)
+	au := r.engine.Group("/auth")
+	au.POST("login", r.auth.Middleware.LoginHandler)
+	au.GET("refresh", r.auth.Middleware.RefreshHandler)
 
-	accounts := r.engine.Group("/accounts")
-	accounts.Use(r.auth.Middleware.MiddlewareFunc())
-	accounts.GET(":id", ctrl.GetAccount)
-	accounts.GET("/", ctrl.QueryAccount)
+	ac := r.engine.Group("/accounts")
+	ac.Use(r.auth.Middleware.MiddlewareFunc())
+	ac.GET(":id", ctrl.GetAccount)
+	ac.GET("/", ctrl.QueryAccount)
 
-	cfg := r.engine.Group("/config")
-	cfg.Use(r.auth.Middleware.MiddlewareFunc())
-	cfg.GET("server/version", ctrl.GetServerVersion)
+	c := r.engine.Group("/config")
+	c.Use(r.auth.Middleware.MiddlewareFunc())
+	c.GET("server/version", ctrl.GetServerVersion)
+
+	n := r.engine.Group("/nodes")
+	n.Use(r.auth.Middleware.MiddlewareFunc())
+	n.GET(":id", ctrl.GetNode)
+	n.GET(":id/health", ctrl.GetHealth)
+	n.GET(":id/info", ctrl.GetInfo)
+	n.GET(":id/perf", ctrl.GetPerf)
+	n.GET("/", ctrl.QueryNode)
+	n.PUT(":id", ctrl.AddNode)
+	n.DELETE(":id", ctrl.DelNode)
 
 	r.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
