@@ -139,4 +139,4 @@ Project License can be found [here](LICENSE).
 - [go-zero](https://github.com/tal-tech/go-zero)
 - [gRPC](https://grpc.io/docs/languages/go/)
 - [protobuf](https://developers.google.com/protocol-buffers/docs/proto3)
-- [Swaggo](https://github.com/swaggo/swag/tree/master/example)
+- [Swag](https://github.com/swaggo/swag/tree/master/example)
