@@ -21,8 +21,8 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"gopkg.in/yaml.v3"
 
-	"github.com/craftslab/actionflow/docs"
 	"github.com/craftslab/metalflow/config"
+	"github.com/craftslab/metalflow/docs"
 	"github.com/craftslab/metalflow/router"
 )
 
