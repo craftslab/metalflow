@@ -21,6 +21,7 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"gopkg.in/yaml.v3"
 
+	"github.com/craftslab/actionflow/docs"
 	"github.com/craftslab/metalflow/config"
 	"github.com/craftslab/metalflow/router"
 )
@@ -39,7 +40,7 @@ func Run() {
 		log.Fatalf("failed to init config: %v", err)
 	}
 
-	if err := initDoc(c); err != nil {
+	if err := initDoc(); err != nil {
 		log.Fatalf("failed to init doc: %v", err)
 	}
 
@@ -79,7 +80,7 @@ func initConfig(name string) (*config.Config, error) {
 	return c, nil
 }
 
-func initDoc(_ *config.Config) error {
+func initDoc() error {
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = *listenUrl
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}

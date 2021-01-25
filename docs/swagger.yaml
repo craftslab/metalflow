@@ -1,0 +1,174 @@
+basePath: /
+definitions:
+  model.Account:
+    properties:
+      avatar:
+        type: string
+      displayname:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  util.HTTPError:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+host: localhost:9080
+info:
+  contact:
+    email: angersax@sina.com
+    name: Jia Jia
+    url: https://github.com/craftslab/metalflow
+  description: MetalFlow REST API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://example.com/terms/
+  title: MetalFlow REST API
+  version: 0.0.1
+paths:
+  /accounts:
+    get:
+      consumes:
+      - application/json
+      description: Query account
+      parameters:
+      - description: Username search by q
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+      summary: Query account
+      tags:
+      - accounts
+  /accounts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get account by ID
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+      summary: Get account by ID
+      tags:
+      - accounts
+  /config/server/version:
+    get:
+      consumes:
+      - application/json
+      description: Get server version
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.HTTPError'
+      summary: Get server version
+      tags:
+      - config
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+  OAuth2AccessCode:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: accessCode
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Application:
+    authorizationUrl: ""
+    flow: application
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Implicit:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: implicit
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    type: oauth2
+  OAuth2Password:
+    authorizationUrl: ""
+    flow: password
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      read: ' Grants read access'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+swagger: "2.0"
+x-extension-openapi:
+  example: value on a json format
