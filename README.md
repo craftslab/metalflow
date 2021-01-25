@@ -58,6 +58,14 @@ docker run -it -p 9080:9080 craftslab/metalflow:latest ./metalflow --config-file
 
 
 
+## Swagger
+
+```
+http://127.0.0.1:9080/swagger/index.html
+```
+
+
+
 ## Usage
 
 ```

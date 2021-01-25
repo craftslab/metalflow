@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # USAGE: https://github.com/swaggo/swag/blob/master/README.md
-# WEB: http://ip:port/swagger/index.html
+# WEB: http://127.0.0.1:9080/swagger/index.html
 
 release=1.7.0
 

@@ -13,6 +13,9 @@ build: go-build
 clean: go-clean
 .PHONY: clean
 
+docs: go-docs
+.PHONY: docs
+
 etcd: go-etcd
 .PHONY: etcd
 
@@ -21,9 +24,6 @@ lint: go-lint
 
 proto: go-proto
 .PHONY: proto
-
-swag: go-swag
-.PHONY: swag
 
 test: go-test
 .PHONY: test
@@ -37,6 +37,9 @@ go-build: FORCE
 go-clean: FORCE
 	./script/clean.sh
 
+go-docs: FORCE
+	./script/docs.sh
+
 go-etcd: FORCE
 	./script/etcd.sh
 
@@ -45,9 +48,6 @@ go-lint: FORCE
 
 go-proto: FORCE
 	./script/proto.sh
-
-go-swag: FORCE
-	./script/swag.sh
 
 go-test: FORCE
 	./script/test.sh
