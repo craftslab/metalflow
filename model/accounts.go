@@ -50,23 +50,45 @@ var accounts = []Account{
 var selfId = 0
 
 func GetAccount(id int) (Account, error) {
+	var a Account
+	var f bool
+
+	f = false
+
 	for _, v := range accounts {
 		if id == v.Id {
-			return v, nil
+			a = v
+			f = true
+			break
 		}
 	}
 
-	return Account{}, errors.New("invalid id")
+	if !f {
+		return Account{}, errors.New("invalid id")
+	}
+
+	return a, nil
 }
 
 func GetSelfAccount() (Account, error) {
+	var a Account
+	var f bool
+
+	f = false
+
 	for _, v := range accounts {
 		if selfId == v.Id {
-			return v, nil
+			a = v
+			f = true
+			break
 		}
 	}
 
-	return Account{}, errors.New("invalid id")
+	if !f {
+		return Account{}, errors.New("invalid id")
+	}
+
+	return a, nil
 }
 
 func QueryAccount(q string) (Account, error) {

@@ -13,7 +13,13 @@
 package controller
 
 import (
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
+
+	"github.com/craftslab/metalflow/model"
+	"github.com/craftslab/metalflow/util"
 )
 
 // GetNode godoc
@@ -29,7 +35,19 @@ import (
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id} [get]
 func (c *Controller) GetNode(ctx *gin.Context) {
-	// TODO
+	param := ctx.Param("id")
+
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		util.NewError(ctx, http.StatusBadRequest, err)
+	}
+
+	node, err := model.GetNode(id)
+	if err != nil {
+		util.NewError(ctx, http.StatusNotFound, err)
+	}
+
+	ctx.JSON(http.StatusOK, node)
 }
 
 // GetHealth godoc
@@ -45,7 +63,19 @@ func (c *Controller) GetNode(ctx *gin.Context) {
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id}/health [get]
 func (c *Controller) GetHealth(ctx *gin.Context) {
-	// TODO
+	param := ctx.Param("id")
+
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		util.NewError(ctx, http.StatusBadRequest, err)
+	}
+
+	health, err := model.GetHealth(id)
+	if err != nil {
+		util.NewError(ctx, http.StatusNotFound, err)
+	}
+
+	ctx.JSON(http.StatusOK, health)
 }
 
 // GetInfo godoc
@@ -61,7 +91,19 @@ func (c *Controller) GetHealth(ctx *gin.Context) {
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id}/info [get]
 func (c *Controller) GetInfo(ctx *gin.Context) {
-	// TODO
+	param := ctx.Param("id")
+
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		util.NewError(ctx, http.StatusBadRequest, err)
+	}
+
+	info, err := model.GetInfo(id)
+	if err != nil {
+		util.NewError(ctx, http.StatusNotFound, err)
+	}
+
+	ctx.JSON(http.StatusOK, info)
 }
 
 // GetPerf godoc
@@ -77,7 +119,19 @@ func (c *Controller) GetInfo(ctx *gin.Context) {
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id}/perf [get]
 func (c *Controller) GetPerf(ctx *gin.Context) {
-	// TODO
+	param := ctx.Param("id")
+
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		util.NewError(ctx, http.StatusBadRequest, err)
+	}
+
+	perf, err := model.GetPerf(id)
+	if err != nil {
+		util.NewError(ctx, http.StatusNotFound, err)
+	}
+
+	ctx.JSON(http.StatusOK, perf)
 }
 
 // QueryNode godoc
@@ -93,7 +147,15 @@ func (c *Controller) GetPerf(ctx *gin.Context) {
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes [get]
 func (c *Controller) QueryNode(ctx *gin.Context) {
-	// TODO
+	q := ctx.Request.URL.Query().Get("q")
+
+	node, err := model.QueryNode(q)
+	if err != nil {
+		util.NewError(ctx, http.StatusNotFound, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, node)
 }
 
 // AddNode godoc
@@ -109,7 +171,19 @@ func (c *Controller) QueryNode(ctx *gin.Context) {
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes [put]
 func (c *Controller) AddNode(ctx *gin.Context) {
-	// TODO
+	param := ctx.Param("id")
+
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		util.NewError(ctx, http.StatusBadRequest, err)
+	}
+
+	node, err := model.AddNode(id)
+	if err != nil {
+		util.NewError(ctx, http.StatusNotFound, err)
+	}
+
+	ctx.JSON(http.StatusOK, node)
 }
 
 // DelNode godoc
@@ -125,5 +199,17 @@ func (c *Controller) AddNode(ctx *gin.Context) {
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes [delete]
 func (c *Controller) DelNode(ctx *gin.Context) {
-	// TODO
+	param := ctx.Param("id")
+
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		util.NewError(ctx, http.StatusBadRequest, err)
+	}
+
+	node, err := model.DelNode(id)
+	if err != nil {
+		util.NewError(ctx, http.StatusNotFound, err)
+	}
+
+	ctx.JSON(http.StatusOK, node)
 }

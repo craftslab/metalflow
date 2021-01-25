@@ -50,6 +50,7 @@ func TestRouter(t *testing.T) {
 	testAuth(r, t)
 	testAccounts(r, t)
 	testConfig(r, t)
+	testNodes(r, t)
 }
 
 func testAuth(r *Router, t *testing.T) {
@@ -81,7 +82,7 @@ func testAuth(r *Router, t *testing.T) {
 }
 
 func testAccounts(r *Router, t *testing.T) {
-	// Test: /accounts/1
+	// Test: GET /accounts/1
 	rec := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/accounts/1", nil)
 	req.Header.Set("Authorization", "Bearer "+token)
@@ -89,7 +90,7 @@ func testAccounts(r *Router, t *testing.T) {
 	assert.Equal(t, http.StatusOK, rec.Code)
 	assert.NotEqual(t, nil, rec.Body.String())
 
-	// Test: /accounts/self
+	// Test: GET /accounts/self
 	rec = httptest.NewRecorder()
 	req, _ = http.NewRequest("GET", "/accounts/self", nil)
 	req.Header.Set("Authorization", "Bearer "+token)
@@ -97,7 +98,7 @@ func testAccounts(r *Router, t *testing.T) {
 	assert.Equal(t, http.StatusOK, rec.Code)
 	assert.NotEqual(t, nil, rec.Body.String())
 
-	// Test: /accounts/?q=admin
+	// Test: GET /accounts/?q=admin
 	rec = httptest.NewRecorder()
 	req, _ = http.NewRequest("GET", "/accounts/?q=admin", nil)
 	req.Header.Set("Authorization", "Bearer "+token)
@@ -107,11 +108,53 @@ func testAccounts(r *Router, t *testing.T) {
 }
 
 func testConfig(r *Router, t *testing.T) {
-	// Test: /config/server/version
+	// Test: GET /config/server/version
 	rec := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/config/server/version", nil)
 	req.Header.Set("Authorization", "Bearer "+token)
 	r.engine.ServeHTTP(rec, req)
 	assert.Equal(t, http.StatusOK, rec.Code)
 	assert.Equal(t, "\""+config.Version+"-build-"+config.Build+"\"", rec.Body.String())
+}
+
+func testNodes(r *Router, t *testing.T) {
+	// Test: GET /nodes/1
+	rec := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/nodes/1", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	r.engine.ServeHTTP(rec, req)
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.NotEqual(t, nil, rec.Body.String())
+
+	// Test: GET /nodes/1/health
+	rec = httptest.NewRecorder()
+	req, _ = http.NewRequest("GET", "/nodes/1/health", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	r.engine.ServeHTTP(rec, req)
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.NotEqual(t, nil, rec.Body.String())
+
+	// Test: GET /nodes/1/info
+	rec = httptest.NewRecorder()
+	req, _ = http.NewRequest("GET", "/nodes/1/info", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	r.engine.ServeHTTP(rec, req)
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.NotEqual(t, nil, rec.Body.String())
+
+	// Test: GET /nodes/1/perf
+	rec = httptest.NewRecorder()
+	req, _ = http.NewRequest("GET", "/nodes/1/perf", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	r.engine.ServeHTTP(rec, req)
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.NotEqual(t, nil, rec.Body.String())
+
+	// Test: /nodes/?q=127.0.0.1
+	rec = httptest.NewRecorder()
+	req, _ = http.NewRequest("GET", "/accounts/?q=127.0.0.1", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	r.engine.ServeHTTP(rec, req)
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.NotEqual(t, nil, rec.Body.String())
 }

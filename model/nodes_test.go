@@ -37,11 +37,3 @@ func TestGetPerf(t *testing.T) {
 func TestQueryNode(t *testing.T) {
 	assert.Equal(t, nil, nil)
 }
-
-func TestAddNode(t *testing.T) {
-	assert.Equal(t, nil, nil)
-}
-
-func TestDelNode(t *testing.T) {
-	assert.Equal(t, nil, nil)
-}
