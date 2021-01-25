@@ -13,7 +13,7 @@
 package model
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 )
 
 type Account struct {
