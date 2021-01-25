@@ -1,0 +1,27 @@
+matrix:
+  include:
+    - language: go
+
+      before_install:
+        - go get github.com/mattn/goveralls
+
+      before_script:
+        curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.33.0
+
+      branches:
+        only: master
+
+      dist: bionic
+
+      git:
+        depth: 1
+
+      go: 1.15.x
+
+      notifications:
+        email: false
+
+      script:
+        - cd $TRAVIS_BUILD_DIR/
+        - golangci-lint run
+        - $GOPATH/bin/goveralls -service=travis-ci
