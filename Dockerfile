@@ -9,3 +9,4 @@ FROM nginx as production-stage
 WORKDIR /go/dist/bin
 RUN mkdir -p /go/dist/bin
 COPY --from=build-stage /go/src/app/bin/* ./
+COPY --from=build-stage /go/src/app/config/*.yml ./

@@ -23,6 +23,7 @@
 - Gin >= 1.6.0
 - Go >= 1.15.0
 - etcd == 3.3.25
+- gRPC == 1.26.0
 
 
 
@@ -40,7 +41,7 @@ make build
 ## Run
 
 ```bash
-./metalflow --listen-url="127.0.0.1:9080"
+./metalflow --config-file="config.yml" --listen-url="127.0.0.1:9080"
 ```
 
 
@@ -52,7 +53,7 @@ git clone https://github.com/craftslab/metalflow.git
 
 cd metalflow
 docker build --no-cache -f Dockerfile -t craftslab/metalflow:latest .
-docker run -it -p 9080:9080 craftslab/metalflow:latest ./metalflow --listen-url="127.0.0.1:9080"
+docker run -it -p 9080:9080 craftslab/metalflow:latest ./metalflow --config-file="config.yml" --listen-url="127.0.0.1:9080"
 ```
 
 
@@ -60,7 +61,35 @@ docker run -it -p 9080:9080 craftslab/metalflow:latest ./metalflow --listen-url=
 ## Usage
 
 ```
-TODO
+usage: metalflow --config-file=CONFIG-FILE [<flags>]
+
+Metal Flow
+
+Flags:
+  --help                     Show context-sensitive help (also try --help-long
+                             and --help-man).
+  --version                  Show application version.
+  --config-file=CONFIG-FILE  Config file (.yml)
+  --listen-url=":9080"       Listen url
+```
+
+
+
+## Settings
+
+*metalflow* parameters can be set in the directory [config](https://github.com/craftslab/metalflow/blob/master/config).
+
+An example of configuration in [config.yml](https://github.com/craftslab/metalflow/blob/master/config/config.yml):
+
+```yaml
+apiVersion: v1
+kind: master
+metadata:
+  name: metalflow
+spec:
+  etcd:
+    host: 127.0.0.1
+    port: 2379
 ```
 
 
@@ -97,4 +126,9 @@ Project License can be found [here](LICENSE).
 
 ## Reference
 
+- [etcd](https://etcd.io/docs/)
+- [go-kit](https://github.com/go-kit/kit)
+- [go-zero](https://github.com/tal-tech/go-zero)
+- [gRPC](https://grpc.io/docs/languages/go/)
+- [protobuf](https://developers.google.com/protocol-buffers/docs/proto3)
 - [Swaggo](https://github.com/swaggo/swag/tree/master/example)
