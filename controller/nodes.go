@@ -34,7 +34,7 @@ import (
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id} [get]
-func (c *Controller) GetNode(ctx *gin.Context) {
+func (c *controller) GetNode(ctx *gin.Context) {
 	param := ctx.Param("id")
 
 	id, err := strconv.Atoi(param)
@@ -62,7 +62,7 @@ func (c *Controller) GetNode(ctx *gin.Context) {
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id}/health [get]
-func (c *Controller) GetHealth(ctx *gin.Context) {
+func (c *controller) GetHealth(ctx *gin.Context) {
 	param := ctx.Param("id")
 
 	id, err := strconv.Atoi(param)
@@ -90,7 +90,7 @@ func (c *Controller) GetHealth(ctx *gin.Context) {
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id}/info [get]
-func (c *Controller) GetInfo(ctx *gin.Context) {
+func (c *controller) GetInfo(ctx *gin.Context) {
 	param := ctx.Param("id")
 
 	id, err := strconv.Atoi(param)
@@ -118,7 +118,7 @@ func (c *Controller) GetInfo(ctx *gin.Context) {
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes/{id}/perf [get]
-func (c *Controller) GetPerf(ctx *gin.Context) {
+func (c *controller) GetPerf(ctx *gin.Context) {
 	param := ctx.Param("id")
 
 	id, err := strconv.Atoi(param)
@@ -146,7 +146,7 @@ func (c *Controller) GetPerf(ctx *gin.Context) {
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes [get]
-func (c *Controller) QueryNode(ctx *gin.Context) {
+func (c *controller) QueryNode(ctx *gin.Context) {
 	q := ctx.Request.URL.Query().Get("q")
 
 	node, err := model.QueryNode(q)
@@ -170,7 +170,7 @@ func (c *Controller) QueryNode(ctx *gin.Context) {
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes [put]
-func (c *Controller) AddNode(ctx *gin.Context) {
+func (c *controller) AddNode(ctx *gin.Context) {
 	param := ctx.Param("id")
 
 	id, err := strconv.Atoi(param)
@@ -198,7 +198,7 @@ func (c *Controller) AddNode(ctx *gin.Context) {
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /nodes [delete]
-func (c *Controller) DelNode(ctx *gin.Context) {
+func (c *controller) DelNode(ctx *gin.Context) {
 	param := ctx.Param("id")
 
 	id, err := strconv.Atoi(param)

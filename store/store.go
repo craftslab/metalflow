@@ -10,35 +10,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package controller
+package store
 
 import (
-	"github.com/gin-gonic/gin"
+	"context"
 )
 
-type Controller interface {
-	GetAccount(ctx *gin.Context)
-	QueryAccount(ctx *gin.Context)
-
-	GetServerVersion(ctx *gin.Context)
-
-	GetNode(ctx *gin.Context)
-	GetHealth(ctx *gin.Context)
-	GetInfo(ctx *gin.Context)
-	GetPerf(ctx *gin.Context)
-	QueryNode(ctx *gin.Context)
-	AddNode(ctx *gin.Context)
-	DelNode(ctx *gin.Context)
+type Store interface {
 }
 
 type Config struct {
 }
 
-type controller struct {
+type store struct {
 }
 
-func New(_ *Config) Controller {
-	return &controller{}
+func New(_ context.Context, _ *Config) Store {
+	return &store{}
 }
 
 func DefaultConfig() *Config {

@@ -36,7 +36,11 @@ type Response struct {
 }
 
 func TestRouter(t *testing.T) {
-	r := New()
+	r := &router{
+		auth:   nil,
+		config: DefaultConfig(),
+		engine: nil,
+	}
 
 	err := r.initAuth()
 	assert.Equal(t, nil, err)
@@ -53,7 +57,7 @@ func TestRouter(t *testing.T) {
 	testNodes(r, t)
 }
 
-func testAuth(r *Router, t *testing.T) {
+func testAuth(r *router, t *testing.T) {
 	// Test: /auth/login
 	rec := httptest.NewRecorder()
 	data := url.Values{}
@@ -81,7 +85,7 @@ func testAuth(r *Router, t *testing.T) {
 	assert.NotEqual(t, nil, rec.Body.String())
 }
 
-func testAccounts(r *Router, t *testing.T) {
+func testAccounts(r *router, t *testing.T) {
 	// Test: GET /accounts/1
 	rec := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/accounts/1", nil)
@@ -107,7 +111,7 @@ func testAccounts(r *Router, t *testing.T) {
 	assert.NotEqual(t, nil, rec.Body.String())
 }
 
-func testConfig(r *Router, t *testing.T) {
+func testConfig(r *router, t *testing.T) {
 	// Test: GET /config/server/version
 	rec := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/config/server/version", nil)
@@ -117,7 +121,7 @@ func testConfig(r *Router, t *testing.T) {
 	assert.Equal(t, "\""+config.Version+"-build-"+config.Build+"\"", rec.Body.String())
 }
 
-func testNodes(r *Router, t *testing.T) {
+func testNodes(r *router, t *testing.T) {
 	// Test: GET /nodes/1
 	rec := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/nodes/1", nil)

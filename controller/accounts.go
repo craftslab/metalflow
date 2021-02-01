@@ -34,7 +34,7 @@ import (
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /accounts/{id} [get]
-func (c *Controller) GetAccount(ctx *gin.Context) {
+func (c *controller) GetAccount(ctx *gin.Context) {
 	param := ctx.Param("id")
 
 	if param == "self" {
@@ -68,7 +68,7 @@ func (c *Controller) GetAccount(ctx *gin.Context) {
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /accounts [get]
-func (c *Controller) QueryAccount(ctx *gin.Context) {
+func (c *controller) QueryAccount(ctx *gin.Context) {
 	q := ctx.Request.URL.Query().Get("q")
 
 	account, err := model.QueryAccount(q)

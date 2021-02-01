@@ -28,7 +28,6 @@ import (
 	"github.com/swaggo/gin-swagger"
 
 	"github.com/craftslab/metalflow/auth"
-	"github.com/craftslab/metalflow/config"
 	"github.com/craftslab/metalflow/controller"
 	"github.com/craftslab/metalflow/util"
 )
@@ -37,19 +36,36 @@ const (
 	timeout = 5 * time.Second
 )
 
-type Router struct {
-	auth   *auth.Auth
-	config *config.Config
+type Router interface {
+	Init() error
+	Run() error
+}
+
+type Config struct {
+	Addr string
+}
+
+type router struct {
+	auth   auth.Auth
+	config *Config
 	engine *gin.Engine
 }
 
-func New() *Router {
-	return &Router{}
+func New(config *Config) Router {
+	return &router{
+		auth:   nil,
+		config: config,
+		engine: nil,
+	}
 }
 
-func (r *Router) Run(addr string, cfg *config.Config) error {
-	r.config = cfg
+func DefaultConfig() *Config {
+	return &Config{
+		Addr: ":9080",
+	}
+}
 
+func (r *router) Init() error {
 	if err := r.initAuth(); err != nil {
 		return errors.Wrap(err, "failed to init auth")
 	}
@@ -62,11 +78,11 @@ func (r *Router) Run(addr string, cfg *config.Config) error {
 		return errors.Wrap(err, "failed to set route")
 	}
 
-	return r.runRouter(addr)
+	return nil
 }
 
-func (r *Router) initAuth() error {
-	r.auth = auth.New()
+func (r *router) initAuth() error {
+	r.auth = auth.New(auth.DefaultConfig())
 	if r.auth == nil {
 		return errors.New("failed to new Auth")
 	}
@@ -78,7 +94,7 @@ func (r *Router) initAuth() error {
 	return nil
 }
 
-func (r *Router) initRoute() error {
+func (r *router) initRoute() error {
 	r.engine = gin.New()
 	if r.engine == nil {
 		return errors.New("failed to new gin")
@@ -102,27 +118,27 @@ func (r *Router) initRoute() error {
 	return nil
 }
 
-func (r *Router) setRoute() error {
-	ctrl := controller.New()
+func (r *router) setRoute() error {
+	ctrl := controller.New(controller.DefaultConfig())
 	if ctrl == nil {
 		return errors.New("failed to new controller")
 	}
 
 	au := r.engine.Group("/auth")
-	au.POST("login", r.auth.Middleware.LoginHandler)
-	au.GET("refresh", r.auth.Middleware.RefreshHandler)
+	au.POST("login", r.auth.Middleware().LoginHandler)
+	au.GET("refresh", r.auth.Middleware().RefreshHandler)
 
 	ac := r.engine.Group("/accounts")
-	ac.Use(r.auth.Middleware.MiddlewareFunc())
+	ac.Use(r.auth.Middleware().MiddlewareFunc())
 	ac.GET(":id", ctrl.GetAccount)
 	ac.GET("/", ctrl.QueryAccount)
 
 	c := r.engine.Group("/config")
-	c.Use(r.auth.Middleware.MiddlewareFunc())
+	c.Use(r.auth.Middleware().MiddlewareFunc())
 	c.GET("server/version", ctrl.GetServerVersion)
 
 	n := r.engine.Group("/nodes")
-	n.Use(r.auth.Middleware.MiddlewareFunc())
+	n.Use(r.auth.Middleware().MiddlewareFunc())
 	n.GET(":id", ctrl.GetNode)
 	n.GET(":id/health", ctrl.GetHealth)
 	n.GET(":id/info", ctrl.GetInfo)
@@ -133,16 +149,16 @@ func (r *Router) setRoute() error {
 
 	r.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.engine.NoRoute(r.auth.Middleware.MiddlewareFunc(), func(ctx *gin.Context) {
+	r.engine.NoRoute(r.auth.Middleware().MiddlewareFunc(), func(ctx *gin.Context) {
 		util.NewError(ctx, http.StatusNotFound, errors.New("Page not found"))
 	})
 
 	return nil
 }
 
-func (r Router) runRouter(addr string) error {
+func (r *router) Run() error {
 	srv := &http.Server{
-		Addr:           addr,
+		Addr:           r.config.Addr,
 		Handler:        r.engine,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,

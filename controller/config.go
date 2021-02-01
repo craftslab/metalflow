@@ -32,7 +32,7 @@ import (
 // @Failure 404 {object} util.HTTPError
 // @Failure 500 {object} util.HTTPError
 // @Router /config/server/version [get]
-func (c *Controller) GetServerVersion(ctx *gin.Context) {
+func (c *controller) GetServerVersion(ctx *gin.Context) {
 	version, err := model.ServerVersion()
 	if err != nil {
 		util.NewError(ctx, http.StatusNotFound, err)

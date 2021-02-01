@@ -31,34 +31,48 @@ const (
 	timeout     = time.Hour
 )
 
-type Auth struct {
-	Middleware *jwt.GinJWTMiddleware
+type Auth interface {
+	Init() error
+	Middleware() *jwt.GinJWTMiddleware
 }
 
-type Login struct {
+type Config struct {
+}
+
+type auth struct {
+	middleware *jwt.GinJWTMiddleware
+}
+
+type login struct {
 	Username string `form:"username" json:"username" binding:"required"`
 	Password string `form:"password" json:"password" binding:"required"`
 }
 
-type User struct {
+type user struct {
 	username string
 }
 
-func New() *Auth {
-	return &Auth{}
+func New(config *Config) Auth {
+	return &auth{
+		middleware: nil,
+	}
 }
 
-func (a *Auth) Init() error {
+func DefaultConfig() *Config {
+	return &Config{}
+}
+
+func (a *auth) Init() error {
 	var err error
 
-	a.Middleware, err = jwt.New(&jwt.GinJWTMiddleware{
+	a.middleware, err = jwt.New(&jwt.GinJWTMiddleware{
 		IdentityKey: identityKey,
 		Key:         []byte(key),
 		MaxRefresh:  maxRefresh,
 		Realm:       realm,
 		Timeout:     timeout,
 		Authenticator: func(c *gin.Context) (interface{}, error) {
-			var l Login
+			var l login
 			if e := c.ShouldBind(&l); e != nil {
 				return "", jwt.ErrMissingLoginValues
 			}
@@ -67,26 +81,26 @@ func (a *Auth) Init() error {
 				return "", jwt.ErrFailedAuthentication
 			}
 			if a.Username == l.Username && a.Password == l.Password {
-				return &User{
+				return &user{
 					username: l.Username,
 				}, nil
 			}
 			return nil, jwt.ErrFailedAuthentication
 		},
 		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if v, ok := data.(*User); ok && v.username == "admin" {
+			if v, ok := data.(*user); ok && v.username == "admin" {
 				return true
 			}
 			return false
 		},
 		IdentityHandler: func(ctx *gin.Context) interface{} {
 			claims := jwt.ExtractClaims(ctx)
-			return &User{
+			return &user{
 				username: claims[identityKey].(string),
 			}
 		},
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*User); ok {
+			if v, ok := data.(*user); ok {
 				return jwt.MapClaims{
 					identityKey: v.username,
 				}
@@ -105,9 +119,13 @@ func (a *Auth) Init() error {
 		return errors.Wrap(err, "failed to new jwt")
 	}
 
-	if err = a.Middleware.MiddlewareInit(); err != nil {
+	if err = a.middleware.MiddlewareInit(); err != nil {
 		return errors.Wrap(err, "failed to init middleware")
 	}
 
 	return nil
+}
+
+func (a *auth) Middleware() *jwt.GinJWTMiddleware {
+	return a.middleware
 }

@@ -31,7 +31,18 @@ func TestInitConfig(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
+func TestInitStore(t *testing.T) {
+	c, err := initConfig("../tests/config.yml")
+	assert.Equal(t, nil, err)
+
+	_, err = initStore(c)
+	assert.Equal(t, nil, err)
+}
+
 func TestInitDoc(t *testing.T) {
-	err := initDoc()
+	c, err := initConfig("../tests/config.yml")
+	assert.Equal(t, nil, err)
+
+	err = initDoc(c)
 	assert.Equal(t, nil, err)
 }

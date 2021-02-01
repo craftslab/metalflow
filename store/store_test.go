@@ -10,37 +10,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package controller
+package store
 
 import (
-	"github.com/gin-gonic/gin"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type Controller interface {
-	GetAccount(ctx *gin.Context)
-	QueryAccount(ctx *gin.Context)
-
-	GetServerVersion(ctx *gin.Context)
-
-	GetNode(ctx *gin.Context)
-	GetHealth(ctx *gin.Context)
-	GetInfo(ctx *gin.Context)
-	GetPerf(ctx *gin.Context)
-	QueryNode(ctx *gin.Context)
-	AddNode(ctx *gin.Context)
-	DelNode(ctx *gin.Context)
-}
-
-type Config struct {
-}
-
-type controller struct {
-}
-
-func New(_ *Config) Controller {
-	return &controller{}
-}
-
-func DefaultConfig() *Config {
-	return &Config{}
+func TestStore(t *testing.T) {
+	assert.Equal(t, nil, nil)
 }

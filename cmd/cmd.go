@@ -13,6 +13,7 @@
 package cmd
 
 import (
+	"context"
 	"io/ioutil"
 	"log"
 	"os"
@@ -24,6 +25,7 @@ import (
 	"github.com/craftslab/metalflow/config"
 	"github.com/craftslab/metalflow/docs"
 	"github.com/craftslab/metalflow/router"
+	"github.com/craftslab/metalflow/store"
 )
 
 var (
@@ -40,13 +42,18 @@ func Run() {
 		log.Fatalf("failed to init config: %v", err)
 	}
 
-	if err := initDoc(); err != nil {
+	if err = initDoc(c); err != nil {
 		log.Fatalf("failed to init doc: %v", err)
+	}
+
+	s, err := initStore(c)
+	if err != nil {
+		log.Fatalf("failed to init store: %v", err)
 	}
 
 	log.Println("flow running")
 
-	if err := runFlow(c); err != nil {
+	if err := runFlow(c, s); err != nil {
 		log.Fatalf("failed to run flow: %v", err)
 	}
 
@@ -80,7 +87,16 @@ func initConfig(name string) (*config.Config, error) {
 	return c, nil
 }
 
-func initDoc() error {
+func initStore(cfg *config.Config) (store.Store, error) {
+	c := store.DefaultConfig()
+	if c == nil {
+		return nil, errors.New("failed to config")
+	}
+
+	return store.New(context.Background(), c), nil
+}
+
+func initDoc(_ *config.Config) error {
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = *listenUrl
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
@@ -88,11 +104,18 @@ func initDoc() error {
 	return nil
 }
 
-func runFlow(cfg *config.Config) error {
-	r := router.New()
+func runFlow(_ *config.Config, _ store.Store) error {
+	c := router.DefaultConfig()
+	if c == nil {
+		return errors.New("failed to config")
+	}
+
+	c.Addr = *listenUrl
+
+	r := router.New(c)
 	if r == nil {
 		return errors.New("failed to new")
 	}
 
-	return r.Run(*listenUrl, cfg)
+	return r.Run()
 }
