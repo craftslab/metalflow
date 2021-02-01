@@ -20,7 +20,7 @@ type Account struct {
 	Avatar      string `json:"avatar"`
 	Displayname string `json:"displayname"`
 	Email       string `json:"email"`
-	Id          int    `json:"id"`
+	Id          uint   `json:"id"`
 	Name        string `json:"name"`
 	Password    string `json:"password"`
 	Username    string `json:"username"`
@@ -47,9 +47,9 @@ var accounts = []Account{
 	},
 }
 
-var selfId = 0
+var selfId uint = 0
 
-func GetAccount(id int) (Account, error) {
+func GetAccount(id uint) (Account, error) {
 	var a Account
 	var f bool
 

@@ -31,11 +31,11 @@ func TestInitConfig(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
-func TestInitStore(t *testing.T) {
+func TestInitPostgres(t *testing.T) {
 	c, err := initConfig("../tests/config.yml")
 	assert.Equal(t, nil, err)
 
-	_, err = initStore(c)
+	_, err = initPostgres(c)
 	assert.Equal(t, nil, err)
 }
 

@@ -21,7 +21,7 @@ type Node struct {
 	Asset    string `json:"asset"`
 	Comments string `json:"comments"`
 	Health   string `json:"health"`
-	Id       int    `json:"id"`
+	Id       uint   `json:"id"`
 	Info     string `json:"info"`
 	Perf     string `json:"perf"`
 	Region   string `json:"region"`
@@ -80,7 +80,7 @@ var nodes = []Node{
 	},
 }
 
-func GetNode(id int) (Node, error) {
+func GetNode(id uint) (Node, error) {
 	var f bool
 	var n Node
 
@@ -101,7 +101,7 @@ func GetNode(id int) (Node, error) {
 	return n, nil
 }
 
-func GetHealth(id int) (string, error) {
+func GetHealth(id uint) (string, error) {
 	var f bool
 	var n Node
 
@@ -122,7 +122,7 @@ func GetHealth(id int) (string, error) {
 	return n.Health, nil
 }
 
-func GetInfo(id int) (string, error) {
+func GetInfo(id uint) (string, error) {
 	var f bool
 	var n Node
 
@@ -143,7 +143,7 @@ func GetInfo(id int) (string, error) {
 	return n.Info, nil
 }
 
-func GetPerf(id int) (string, error) {
+func GetPerf(id uint) (string, error) {
 	var f bool
 	var n Node
 
@@ -181,12 +181,12 @@ func QueryNode(q string) (Node, error) {
 	return buf, nil
 }
 
-func AddNode(id int) (Node, error) {
+func AddNode(id uint) (Node, error) {
 	// TODO
 	return Node{}, nil
 }
 
-func DelNode(id int) (Node, error) {
+func DelNode(id uint) (Node, error) {
 	// TODO
 	return Node{}, nil
 }

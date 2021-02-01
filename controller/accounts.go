@@ -28,7 +28,7 @@ import (
 // @Tags accounts
 // @Accept json
 // @Produce json
-// @Param id path int true "Account ID"
+// @Param id path uint true "Account ID"
 // @Success 200 {object} model.Account
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
@@ -44,8 +44,8 @@ func (c *controller) GetAccount(ctx *gin.Context) {
 			util.NewError(ctx, http.StatusNotFound, err)
 		}
 	} else {
-		if id, err := strconv.Atoi(param); err == nil {
-			if account, e := model.GetAccount(id); e == nil {
+		if id, err := strconv.ParseUint(param, 10, 64); err == nil {
+			if account, e := model.GetAccount(uint(id)); e == nil {
 				ctx.JSON(http.StatusOK, account)
 			} else {
 				util.NewError(ctx, http.StatusNotFound, e)

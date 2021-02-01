@@ -28,7 +28,7 @@ import (
 // @Tags nodes
 // @Accept json
 // @Produce json
-// @Param id path int true "Node ID"
+// @Param id path uint true "Node ID"
 // @Success 200 {object} model.Node
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
@@ -37,12 +37,12 @@ import (
 func (c *controller) GetNode(ctx *gin.Context) {
 	param := ctx.Param("id")
 
-	id, err := strconv.Atoi(param)
+	id, err := strconv.ParseUint(param, 10, 64)
 	if err != nil {
 		util.NewError(ctx, http.StatusBadRequest, err)
 	}
 
-	node, err := model.GetNode(id)
+	node, err := model.GetNode(uint(id))
 	if err != nil {
 		util.NewError(ctx, http.StatusNotFound, err)
 	}
@@ -56,7 +56,7 @@ func (c *controller) GetNode(ctx *gin.Context) {
 // @Tags nodes
 // @Accept json
 // @Produce json
-// @Param id path int true "Node ID"
+// @Param id path uint true "Node ID"
 // @Success 200 {object} model.Node
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
@@ -65,12 +65,12 @@ func (c *controller) GetNode(ctx *gin.Context) {
 func (c *controller) GetHealth(ctx *gin.Context) {
 	param := ctx.Param("id")
 
-	id, err := strconv.Atoi(param)
+	id, err := strconv.ParseUint(param, 10, 64)
 	if err != nil {
 		util.NewError(ctx, http.StatusBadRequest, err)
 	}
 
-	health, err := model.GetHealth(id)
+	health, err := model.GetHealth(uint(id))
 	if err != nil {
 		util.NewError(ctx, http.StatusNotFound, err)
 	}
@@ -84,7 +84,7 @@ func (c *controller) GetHealth(ctx *gin.Context) {
 // @Tags nodes
 // @Accept json
 // @Produce json
-// @Param id path int true "Node ID"
+// @Param id path uint true "Node ID"
 // @Success 200 {object} model.Node
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
@@ -93,12 +93,12 @@ func (c *controller) GetHealth(ctx *gin.Context) {
 func (c *controller) GetInfo(ctx *gin.Context) {
 	param := ctx.Param("id")
 
-	id, err := strconv.Atoi(param)
+	id, err := strconv.ParseUint(param, 10, 64)
 	if err != nil {
 		util.NewError(ctx, http.StatusBadRequest, err)
 	}
 
-	info, err := model.GetInfo(id)
+	info, err := model.GetInfo(uint(id))
 	if err != nil {
 		util.NewError(ctx, http.StatusNotFound, err)
 	}
@@ -112,7 +112,7 @@ func (c *controller) GetInfo(ctx *gin.Context) {
 // @Tags nodes
 // @Accept json
 // @Produce json
-// @Param id path int true "Node ID"
+// @Param id path uint true "Node ID"
 // @Success 200 {object} model.Node
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
@@ -121,12 +121,12 @@ func (c *controller) GetInfo(ctx *gin.Context) {
 func (c *controller) GetPerf(ctx *gin.Context) {
 	param := ctx.Param("id")
 
-	id, err := strconv.Atoi(param)
+	id, err := strconv.ParseUint(param, 10, 64)
 	if err != nil {
 		util.NewError(ctx, http.StatusBadRequest, err)
 	}
 
-	perf, err := model.GetPerf(id)
+	perf, err := model.GetPerf(uint(id))
 	if err != nil {
 		util.NewError(ctx, http.StatusNotFound, err)
 	}
@@ -164,7 +164,7 @@ func (c *controller) QueryNode(ctx *gin.Context) {
 // @Tags nodes
 // @Accept json
 // @Produce json
-// @Param id path int true "Node ID"
+// @Param id path uint true "Node ID"
 // @Success 200 {object} model.Node
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
@@ -173,12 +173,12 @@ func (c *controller) QueryNode(ctx *gin.Context) {
 func (c *controller) AddNode(ctx *gin.Context) {
 	param := ctx.Param("id")
 
-	id, err := strconv.Atoi(param)
+	id, err := strconv.ParseUint(param, 10, 64)
 	if err != nil {
 		util.NewError(ctx, http.StatusBadRequest, err)
 	}
 
-	node, err := model.AddNode(id)
+	node, err := model.AddNode(uint(id))
 	if err != nil {
 		util.NewError(ctx, http.StatusNotFound, err)
 	}
@@ -192,7 +192,7 @@ func (c *controller) AddNode(ctx *gin.Context) {
 // @Tags nodes
 // @Accept json
 // @Produce json
-// @Param id path int true "Node ID"
+// @Param id path uint true "Node ID"
 // @Success 200 {object} model.Node
 // @Failure 400 {object} util.HTTPError
 // @Failure 404 {object} util.HTTPError
@@ -201,12 +201,12 @@ func (c *controller) AddNode(ctx *gin.Context) {
 func (c *controller) DelNode(ctx *gin.Context) {
 	param := ctx.Param("id")
 
-	id, err := strconv.Atoi(param)
+	id, err := strconv.ParseUint(param, 10, 64)
 	if err != nil {
 		util.NewError(ctx, http.StatusBadRequest, err)
 	}
 
-	node, err := model.DelNode(id)
+	node, err := model.DelNode(uint(id))
 	if err != nil {
 		util.NewError(ctx, http.StatusNotFound, err)
 	}

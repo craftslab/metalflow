@@ -24,8 +24,8 @@ import (
 
 	"github.com/craftslab/metalflow/config"
 	"github.com/craftslab/metalflow/docs"
+	"github.com/craftslab/metalflow/postgres"
 	"github.com/craftslab/metalflow/router"
-	"github.com/craftslab/metalflow/store"
 )
 
 var (
@@ -46,14 +46,14 @@ func Run() {
 		log.Fatalf("failed to init doc: %v", err)
 	}
 
-	s, err := initStore(c)
+	p, err := initPostgres(c)
 	if err != nil {
-		log.Fatalf("failed to init store: %v", err)
+		log.Fatalf("failed to init postgres: %v", err)
 	}
 
 	log.Println("flow running")
 
-	if err := runFlow(c, s); err != nil {
+	if err := runFlow(c, p); err != nil {
 		log.Fatalf("failed to run flow: %v", err)
 	}
 
@@ -87,13 +87,13 @@ func initConfig(name string) (*config.Config, error) {
 	return c, nil
 }
 
-func initStore(cfg *config.Config) (store.Store, error) {
-	c := store.DefaultConfig()
+func initPostgres(cfg *config.Config) (postgres.Postgres, error) {
+	c := postgres.DefaultConfig()
 	if c == nil {
 		return nil, errors.New("failed to config")
 	}
 
-	return store.New(context.Background(), c), nil
+	return postgres.New(context.Background(), c), nil
 }
 
 func initDoc(_ *config.Config) error {
@@ -104,7 +104,7 @@ func initDoc(_ *config.Config) error {
 	return nil
 }
 
-func runFlow(_ *config.Config, _ store.Store) error {
+func runFlow(_ *config.Config, _ postgres.Postgres) error {
 	c := router.DefaultConfig()
 	if c == nil {
 		return errors.New("failed to config")
