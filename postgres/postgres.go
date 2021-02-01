@@ -22,13 +22,13 @@ import (
 
 type Postgres interface {
 	Open() error
-	Close() error
+	Close()
 
 	Migrate(model interface{}) error
-	Create(model interface{}) error
-	Read(model interface{}, conds ...interface{}) error
-	Update(model interface{}, column string, value interface{}) error
-	Delete(model interface{}) error
+	Create(model interface{})
+	Read(model, cond, value interface{})
+	Update(model interface{}, column string, value interface{})
+	Delete(model, cond, value interface{})
 }
 
 type Config struct {
@@ -82,9 +82,8 @@ func (p *_postgres) Open() error {
 	return nil
 }
 
-func (p *_postgres) Close() error {
+func (p *_postgres) Close() {
 	// PASS
-	return nil
 }
 
 func (p *_postgres) Migrate(model interface{}) error {
@@ -95,34 +94,18 @@ func (p *_postgres) Migrate(model interface{}) error {
 	return nil
 }
 
-func (p *_postgres) Create(model interface{}) error {
-	if db := p.database.Create(model); db == nil {
-		return errors.New("failed to create")
-	}
-
-	return nil
+func (p *_postgres) Create(model interface{}) {
+	p.database.Create(model)
 }
 
-func (p *_postgres) Read(model interface{}, conds ...interface{}) error {
-	if db := p.database.First(model, conds); db == nil {
-		return errors.New("failed to read")
-	}
-
-	return nil
+func (p *_postgres) Read(model, cond, value interface{}) {
+	p.database.First(model, cond, value)
 }
 
-func (p *_postgres) Update(model interface{}, column string, value interface{}) error {
-	if db := p.database.Model(model).Update(column, value); db == nil {
-		return errors.New("failed to update")
-	}
-
-	return nil
+func (p *_postgres) Update(model interface{}, column string, value interface{}) {
+	p.database.Model(model).Update(column, value)
 }
 
-func (p *_postgres) Delete(model interface{}) error {
-	if db := p.database.Delete(model); db == nil {
-		return errors.New("failed to delete")
-	}
-
-	return nil
+func (p *_postgres) Delete(model, cond, value interface{}) {
+	p.database.Delete(model, cond, value)
 }

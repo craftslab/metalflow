@@ -17,14 +17,15 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
 )
 
 type Model struct {
+	gorm.Model
 	Address  string `gorm:"uniqueIndex,sort:desc"`
 	Asset    string `gorm:"uniqueIndex"`
 	Comments string
 	Health   string `gorm:"index"`
-	Id       uint   `gorm:"primary_key"`
 	Info     string
 	Perf     string `gorm:"index"`
 	Region   string `gorm:"index"`
@@ -41,7 +42,6 @@ var (
 		Asset:    "0",
 		Comments: "node 0",
 		Health:   "running",
-		Id:       0,
 		Info: `"
 			{
 				"bare": {
@@ -77,29 +77,25 @@ func TestPostgres(t *testing.T) {
 	err = p.Migrate(&Model{})
 	assert.Equal(t, nil, err)
 
-	err = p.Create(&model)
-	assert.Equal(t, nil, err)
+	p.Create(&model)
 
 	var m Model
 
-	err = p.Read(&m, "Address=?", "127.0.0.2")
-	assert.NotEqual(t, nil, err)
+	p.Read(&m, "Address=?", "127.0.0.2")
+	assert.NotEqual(t, "127.0.0.1", m.Address)
 
-	err = p.Read(&m, "Address=?", "127.0.0.1")
-	assert.Equal(t, nil, err)
+	p.Read(&m, "Address=?", "127.0.0.1")
+	assert.Equal(t, "127.0.0.1", m.Address)
 
-	err = p.Update(&m, "Address", "127.0.0.2")
-	assert.Equal(t, nil, err)
+	p.Update(&m, "Address", "127.0.0.2")
 
-	err = p.Read(&m, "Address=?", "127.0.0.2")
-	assert.Equal(t, nil, err)
+	p.Read(&m, "Address=?", "127.0.0.2")
+	assert.Equal(t, "127.0.0.2", m.Address)
 
-	err = p.Delete(&m)
-	assert.Equal(t, nil, err)
+	p.Delete(&m, "Address=?", "127.0.0.2")
 
-	err = p.Read(&m, "Address=?", "127.0.0.2")
-	assert.NotEqual(t, nil, err)
+	p.Read(&m, "Address=?", "127.0.0.2")
+	assert.NotEqual(t, "127.0.0.2", m.Address)
 
-	err = p.Close()
-	assert.Equal(t, nil, err)
+	p.Close()
 }
