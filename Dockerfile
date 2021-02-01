@@ -6,7 +6,8 @@ RUN apt update && \
 RUN make build
 
 FROM nginx as production-stage
-WORKDIR /go/dist/bin
-RUN mkdir -p /go/dist/bin
-COPY --from=build-stage /go/src/app/bin/* ./
-COPY --from=build-stage /go/src/app/config/*.yml ./
+WORKDIR /go/dist/
+RUN mkdir -p /go/dist/bin && \
+    mkdir -p /go/dist/etc
+COPY --from=build-stage /go/src/app/bin/* /go/dist/bin/
+COPY --from=build-stage /go/src/app/config/*.yml /go/dist/etc/

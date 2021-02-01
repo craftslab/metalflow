@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  master:
+    image: craftslab/metalflow:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 9080:9080
+    volumes:
+      - /go/dist/etc:/go/dist/etc
+
+  database:
+    image: postgres:13.1-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: metalflow
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+
+  admin:
+    image: dpage/pgadmin4:4.30
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - 8080:80

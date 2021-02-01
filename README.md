@@ -23,6 +23,7 @@
 - Gin >= 1.6.0
 - Go >= 1.15.0
 - GORM >= 1.20.11
+- PostgreSQL >= 12.5
 - etcd == 3.3.25
 - gRPC == 1.26.0
 
@@ -54,15 +55,22 @@ git clone https://github.com/craftslab/metalflow.git
 
 cd metalflow
 docker build --no-cache -f Dockerfile -t craftslab/metalflow:latest .
-docker run -it -p 9080:9080 craftslab/metalflow:latest ./metalflow --config-file="config.yml" --listen-url="127.0.0.1:9080"
+docker run -it -p 9080:9080 craftslab/metalflow:latest ./bin/metalflow --config-file="./etc/config.yml" --listen-url="127.0.0.1:9080"
 ```
 
 
 
-## Swagger
+## Stack
 
-```
-http://127.0.0.1:9080/swagger/index.html
+```bash
+docker swarm init
+
+mkdir -p /var/lib/postgresql/data
+docker stack deploy -c Dockerstack.yml metalflow
+docker stack services metalflow
+docker stack rm metalflow
+
+docker swarm leave --force
 ```
 
 
@@ -99,7 +107,19 @@ spec:
   etcd:
     host: 127.0.0.1
     port: 2379
+  postgres:
+    host: 127.0.0.1
+    port: 5432
+    user: postgres
+    pass: postgres
+    db: metalflow
 ```
+
+
+
+## Design
+
+![design](design.png)
 
 
 
@@ -121,9 +141,36 @@ val: {COMMAND}
 
 
 
-## Design
+## PostgreSQL
 
-![design](design.png)
+- Admin
+
+```
+pgAdmin: http://127.0.0.1:8080
+
+user: user@domain.com
+pass: postgres
+```
+
+- Backup
+
+```bash
+pg_dump -h 127.0.0.1 -p 5432 -U postgres -d metalflow -E utf8 -F t -b -v -f metalflow.tar
+```
+
+- Restore
+
+```bash
+pg_restore -h 127.0.0.1 -p 5432 -U postgres -O -d metalflow -v metalflow.tar
+```
+
+
+
+## Swagger
+
+```
+http://127.0.0.1:9080/swagger/index.html
+```
 
 
 
@@ -139,5 +186,8 @@ Project License can be found [here](LICENSE).
 - [go-kit](https://github.com/go-kit/kit)
 - [go-zero](https://github.com/tal-tech/go-zero)
 - [gRPC](https://grpc.io/docs/languages/go/)
+- [pgAdmin](https://hub.docker.com/r/dpage/pgadmin4/)
+- [postgresql](https://hub.docker.com/_/postgres)
 - [protobuf](https://developers.google.com/protocol-buffers/docs/proto3)
+- [stack](https://docs.docker.com/engine/swarm/stack-deploy/)
 - [swag](https://github.com/swaggo/swag)

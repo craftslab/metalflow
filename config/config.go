@@ -24,12 +24,21 @@ type MetaData struct {
 }
 
 type Spec struct {
-	Etcd Etcd `yaml:"etcd"`
+	Etcd     Etcd     `yaml:"etcd"`
+	Postgres Postgres `yaml:"postgres"`
 }
 
 type Etcd struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
+}
+
+type Postgres struct {
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
+	User string `yaml:"user"`
+	Pass string `yaml:"pass"`
+	Db   string `yaml:"db"`
 }
 
 var (
