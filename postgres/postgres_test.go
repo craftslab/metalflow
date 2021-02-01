@@ -79,21 +79,23 @@ func TestPostgres(t *testing.T) {
 
 	p.Create(&model)
 
-	var m Model
-
+	m := Model{}
 	p.Read(&m, "Address=?", "127.0.0.2")
 	assert.NotEqual(t, "127.0.0.1", m.Address)
 
+	m = Model{}
 	p.Read(&m, "Address=?", "127.0.0.1")
 	assert.Equal(t, "127.0.0.1", m.Address)
 
 	p.Update(&m, "Address", "127.0.0.2")
 
+	m = Model{}
 	p.Read(&m, "Address=?", "127.0.0.2")
 	assert.Equal(t, "127.0.0.2", m.Address)
 
 	p.Delete(&m, "Address=?", "127.0.0.2")
 
+	m = Model{}
 	p.Read(&m, "Address=?", "127.0.0.2")
 	assert.NotEqual(t, "127.0.0.2", m.Address)
 
