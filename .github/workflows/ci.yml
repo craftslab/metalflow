@@ -51,6 +51,8 @@ jobs:
             ${{ runner.os }}-go-${{ matrix.golang }}-
       - name: Install etcd
         run: make etcd
+      - name: Install postgres
+        run: make postgres
       - name: Run tests
         run: make test
         continue-on-error: false

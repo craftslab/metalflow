@@ -22,6 +22,9 @@ etcd: go-etcd
 lint: go-lint
 .PHONY: lint
 
+postgres: go-postgres
+.PHONY: store
+
 proto: go-proto
 .PHONY: proto
 
@@ -45,6 +48,9 @@ go-etcd: FORCE
 
 go-lint: FORCE
 	./script/lint.sh
+
+go-postgres: FORCE
+	./script/postgres.sh
 
 go-proto: FORCE
 	./script/proto.sh

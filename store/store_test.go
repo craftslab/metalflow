@@ -13,11 +13,44 @@
 package store
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
+)
+
+type Model struct {
+	gorm.Model
+	Address  string
+	Asset    string
+	Comments string
+	Health   string
+	Id       int
+	Info     string
+	Perf     string
+	Region   string
+}
+
+const (
+	pass = "postgres"
+	user = "postgres"
 )
 
 func TestStore(t *testing.T) {
-	assert.Equal(t, nil, nil)
+	config := DefaultConfig()
+	config.User = user
+	config.Pass = pass
+
+	s := New(context.Background(), config)
+	assert.NotEqual(t, nil, s)
+
+	err := s.Open()
+	assert.Equal(t, nil, err)
+
+	err = s.Migrate(&Model{})
+	assert.Equal(t, nil, err)
+
+	err = s.Close()
+	assert.Equal(t, nil, err)
 }

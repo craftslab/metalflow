@@ -35,4 +35,4 @@ services:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
       PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
-      - 8080:80
+      - 9081:80

@@ -14,21 +14,79 @@ package store
 
 import (
 	"context"
+
+	"github.com/pkg/errors"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Store interface {
+	Open() error
+	Close() error
+
+	Migrate(model interface{}) error
 }
 
 type Config struct {
+	Db   string
+	Host string
+	Pass string
+	Port string
+	User string
 }
 
 type store struct {
+	config   *Config
+	database *gorm.DB
 }
 
-func New(_ context.Context, _ *Config) Store {
-	return &store{}
+const (
+	dsn = "sslmode=disable TimeZone=Asia/Shanghai"
+)
+
+func New(_ context.Context, config *Config) Store {
+	return &store{
+		config:   config,
+		database: nil,
+	}
 }
 
 func DefaultConfig() *Config {
-	return &Config{}
+	return &Config{
+		Db:   "metalflow",
+		Host: "127.0.0.1",
+		Pass: "",
+		Port: "5432",
+		User: "",
+	}
+}
+
+func (s *store) Open() error {
+	host := "host=" + s.config.Host + " "
+	port := "port=" + s.config.Port + " "
+	user := "user=" + s.config.User + " "
+	pass := "password=" + s.config.Pass + " "
+	dbname := "dbname=" + s.config.Db + " "
+
+	db, err := gorm.Open(postgres.Open(host+port+user+pass+dbname+dsn), &gorm.Config{})
+	if err != nil {
+		return errors.Wrap(err, "failed to open")
+	}
+
+	s.database = db
+
+	return nil
+}
+
+func (s *store) Close() error {
+	// TODO
+	return nil
+}
+
+func (s *store) Migrate(model interface{}) error {
+	if err := s.database.AutoMigrate(model); err != nil {
+		return errors.Wrap(err, "failed to migrate")
+	}
+
+	return nil
 }

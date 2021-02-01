@@ -146,7 +146,7 @@ val: {COMMAND}
 - Admin
 
 ```
-pgAdmin: http://127.0.0.1:8080
+pgAdmin: http://127.0.0.1:9081
 
 user: user@domain.com
 pass: postgres

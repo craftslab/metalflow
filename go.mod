@@ -15,4 +15,6 @@ require (
 	github.com/swaggo/swag v1.6.9
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+	gorm.io/driver/postgres v1.0.8
+	gorm.io/gorm v1.20.12
 )
