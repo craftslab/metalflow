@@ -549,7 +549,33 @@ var doc = `{
             }
         },
         "model.Node": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "asset": {
+                    "type": "string"
+                },
+                "comments": {
+                    "type": "string"
+                },
+                "health": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "perf": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                }
+            }
         },
         "util.HTTPError": {
             "type": "object",
