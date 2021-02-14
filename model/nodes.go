@@ -36,7 +36,7 @@ var nodes = []Node{
 		Id:       0,
 		Info: `"
 			{
-				"bare": {
+				"metrics": {
 					"cpu": "4 CPU",
 					"disk": "49.0 GB (16.0 GB Used)",
 					"io": "RD 11887928 KB WR 61067948 KB",
@@ -61,7 +61,7 @@ var nodes = []Node{
 		Id:       1,
 		Info: `"
 			{
-				"bare": {
+				"metrics": {
 					"cpu": "4 CPU",
 					"disk": "49.0 GB (16.0 GB Used)",
 					"io": "RD 11887928 KB WR 61067948 KB",
