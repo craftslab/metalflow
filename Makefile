@@ -23,7 +23,7 @@ lint: go-lint
 .PHONY: lint
 
 postgres: go-postgres
-.PHONY: store
+.PHONY: postgres
 
 proto: go-proto
 .PHONY: proto
