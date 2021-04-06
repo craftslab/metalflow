@@ -64,7 +64,9 @@ import (
 // @x-extension-openapi {"example": "value on a json format"}
 
 func main() {
-	cmd.Run()
+	if err := cmd.Run(); err != nil {
+		os.Exit(1)
+	}
 
 	os.Exit(0)
 }

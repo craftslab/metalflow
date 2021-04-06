@@ -34,30 +34,32 @@ var (
 	listenUrl  = app.Flag("listen-url", "Listen url").Default(":9080").String()
 )
 
-func Run() {
+func Run() error {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	c, err := initConfig(*configFile)
 	if err != nil {
-		log.Fatalf("failed to init config: %v", err)
+		return errors.Wrap(err, "failed to init config")
 	}
 
 	if err = initDoc(c); err != nil {
-		log.Fatalf("failed to init doc: %v", err)
+		return errors.Wrap(err, "failed to init doc")
 	}
 
 	p, err := initPostgres(c)
 	if err != nil {
-		log.Fatalf("failed to init postgres: %v", err)
+		return errors.Wrap(err, "failed to init postgres")
 	}
 
 	log.Println("flow running")
 
 	if err := runFlow(c, p); err != nil {
-		log.Fatalf("failed to run flow: %v", err)
+		return errors.Wrap(err, "failed to run flow")
 	}
 
 	log.Println("flow exiting")
+
+	return nil
 }
 
 func initConfig(name string) (*config.Config, error) {
