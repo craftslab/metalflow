@@ -22,7 +22,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/craftslab/actionflow/config"
+	"github.com/craftslab/metalflow/config"
 )
 
 var (
