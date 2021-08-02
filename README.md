@@ -55,7 +55,7 @@ git clone https://github.com/craftslab/metalflow.git
 
 cd metalflow
 docker build --no-cache -f Dockerfile -t craftslab/metalflow:latest .
-docker run -it -p 9080:9080 craftslab/metalflow:latest ./bin/metalflow --config-file="./etc/config.yml" --listen-url="127.0.0.1:9080"
+docker run -p 9080:9080 craftslab/metalflow:latest /metalflow --config-file="/config.yml" --listen-url="127.0.0.1:9080"
 ```
 
 
