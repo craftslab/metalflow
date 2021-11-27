@@ -14,6 +14,8 @@
 
 - See *[metalbeat](https://github.com/craftslab/metalbeat/)* as an agent of *metalflow*.
 - See *[metalmetrics](https://github.com/craftslab/metalmetrics/)* as a worker of *metalflow*.
+- See *[metalmetrics-rs](https://github.com/craftslab/metalmetrics-rs/)* as a worker of *metalflow*.
+- See *[metaltask](https://github.com/craftslab/metaltask/)* as a worker of *metalflow*.
 - See *[metalview](https://github.com/craftslab/metalview/)* as a view of *metalflow*.
 
 
